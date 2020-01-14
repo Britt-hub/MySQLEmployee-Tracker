@@ -4,15 +4,11 @@ CREATE DATABASE employdb;
 
 USE employdb;
 -- I TOOK OUT THE FOREIGN KEY
-CREATE TABLE employee (
-  id INT NOT NULL AUTO_INCREMENT,
 
-  first_name VARCHAR(30),
-  last_name VARCHAR(30),
-  role_id INT NULL,
-  manger_id INT NULL,
-  PRIMARY KEY (id),
-  FOREIGN KEY(role_id)
+CREATE TABLE department (
+  id INT NOT NULL AUTO_INCREMENT,
+  name VARCHAR(30) NULL,
+  PRIMARY KEY (id)
 );
 
 CREATE TABLE role (
@@ -21,27 +17,31 @@ CREATE TABLE role (
   salary DECIMAL(10,2) NULL,
   department_id INT NULL,
   PRIMARY KEY (id),
-  FOREIGN KEY (department_id)
+  FOREIGN KEY (department_id) REFERENCES department(id)
 );
 
-CREATE TABLE department (
+CREATE TABLE employee (
   id INT NOT NULL AUTO_INCREMENT,
-  name VARCHAR(30) NULL,
-  
-  PRIMARY KEY (id)
-);
-
-INSERT INTO products (flavor, price, quantity)
-VALUES ("vanilla", 2.50, 100);
-
-INSERT INTO products (flavor, price, quantity)
-VALUES ("chocolate", 3.10, 120);
-
-INSERT INTO products (flavor, price, quantity)
-VALUES ("strawberry", 3.25, 75);
+  first_name VARCHAR(30),
+  last_name VARCHAR(30),
+  role_id INT NULL,
+  manager_id INT NULL,
+  PRIMARY KEY (id),
+  FOREIGN KEY(role_id) REFERENCES role(id)
+  );
 
 
-SELECT * FROM employee, role, department
--- ### Alternative way to insert more than one row
--- INSERT INTO products (flavor, price, quantity)
--- VALUES ("vanilla", 2.50, 100), ("chocolate", 3.10, 120), ("strawberry", 3.25, 75);
+
+ 
+--  INSERT INTO department ( name)
+--  VALUES ("Brittany");
+
+--  INSERT INTO role (title, salary, department_id)
+--  VALUES ("Manager", 30000, 1);
+
+--  INSERT INTO employee (first_name, last_name, role_id, manger_id)
+--  VALUES ("Brittany", "Loy", 1, 1);
+
+
+-- SELECT * FROM employee, role, department
+

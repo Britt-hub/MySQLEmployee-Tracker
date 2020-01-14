@@ -15,10 +15,91 @@ var connection = mysql.createConnection({
   database: "employdb"
 });
 
-connection.connect(function(err) {
+connection.connect(function (err) {
+
   if (err) throw err;
+  // else
   console.log("connected as id " + connection.threadId);
-  createSong();
+  gettingCommandLine();
+
 });
 
+function gettingCommandLine() {
 
+  inquirer
+    .prompt([
+      {
+        type: "list",
+        message: "What would you like to do?",
+        name: "options",
+        choices: [
+          "View All employees",
+          "View All Employees by Department",
+          "View All Employees by Manager",
+          "Add Employees",
+          "Remove Empoyees",
+          "Update EMployee Role",
+          "Update Employer Manager"
+        ]
+      },
+
+    ]).then(function (data) {
+      console.log(data.options);
+
+      switch (data.options) {
+        case "View All employees":
+          viewAllEmlployees();
+          break;
+        case "View All Employees by Department":
+          viewAllDepartment();
+          break;
+        case "View All Employees by Manager":
+          viewAllManager();
+          break;
+        case "Add Employees":
+          viewAllAddEmployees();
+          break;
+
+        case "Remove Empoyees":
+          viewAllRemovewEmployees();
+          break;
+        case "Update Employee Role":
+          updateEmployeeRole();
+          break;
+
+        case "Update Employer Manager":
+          updateEmployerManager();
+          break;
+      }
+    }
+
+    );
+}
+
+function viewAllEmlployees() {
+  console.log('her i am');
+}
+
+function viewAllDepartment() {
+  console.log("department");
+}
+
+function viewAllManager() {
+  console.log("Manager");
+}
+
+function viewAllRemovewEmployees() {
+  console.log("adding");
+}
+
+function viewAllAddEmployees() {
+  console.log("Manager");
+}
+
+function updateEmployeeRole() {
+  console.log("Update");
+}
+
+function updateEmployerManager() {
+  console.log("update employer manager");
+}
