@@ -22,4 +22,7 @@ MySql - Data Base
 
 
 ## License
-[The Unlicense]
+MIT License
+
+
+Copyright (c) [2019] [Brittany]

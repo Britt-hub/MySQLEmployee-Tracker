@@ -15,6 +15,9 @@ var connection = mysql.createConnection({
   database: "employdb"
 });
 
+// for heroku 
+const PORT = process.env.PORT || 3306;
+
 connection.connect(function (err) {
 
   if (err) throw err;
@@ -103,3 +106,7 @@ function updateEmployeeRole() {
 function updateEmployerManager() {
   console.log("update employer manager");
 }
+
+// app.listen(PORT, function () {
+//   console.log(`server is running on port ${PORT}`);
+// })
