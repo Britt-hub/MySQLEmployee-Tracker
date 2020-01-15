@@ -78,9 +78,24 @@ function gettingCommandLine() {
 
     );
 }
-
+//look at this portion of the code. confused on the .prompt
 function viewAllEmlployees() {
-  console.log('her i am');
+  console.log('see employees');
+  inquirer 
+    .prompt({
+      name: "employees",
+      type: "list"
+
+    })
+    .then(function(data) {
+      var query ="SELECT employee,"
+      connection.query(query, { data: data.employee}, function(err,res) {
+        for (var i = 0; i < res.length; i++) {
+          console.log("");
+        }
+        runSearch();
+      });
+    });
 }
 
 function viewAllDepartment() {
