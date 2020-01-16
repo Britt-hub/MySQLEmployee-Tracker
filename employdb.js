@@ -23,11 +23,11 @@ connection.connect(function (err) {
   if (err) throw err;
   // else
   console.log("connected as id " + connection.threadId);
-  gettingCommandLine();
+  runSearch();
 
 });
 
-function gettingCommandLine() {
+function runSearch() {
 
   inquirer
     .prompt([
@@ -60,7 +60,7 @@ function gettingCommandLine() {
           viewAllManager();
           break;
         case "Add Employees":
-          viewAllAddEmployees();
+          AddEmployees();
           break;
 
         case "Remove Empoyees":
@@ -80,32 +80,18 @@ function gettingCommandLine() {
 }
 //look at this portion of the code. confused on the .prompt//////////////////////////////////
 function viewAllEmlployees() {
-  var query = "SELECT employee.first_name, employee.last_name FROM employee";
+  var query = "SELECT * FROM employee  INNER JOIN role ON employee.role_id = role.id INNER JOIN department ON role.department_id = department.id";
   connection.query(query, function (err, res) {
-    var employeeNames = []
+
+    console.log('id      first_name      last_name      title                     department           salary      manager')
     for (var i = 0; i < res.length; i++) {
-      employeeNames.push(res[i].first_name + " " + res[i].last_name);
+      console.log(res[i].id.toString().padEnd(7), res[i].first_name.padEnd(15), res[i].last_name.padEnd(14), res[i].title.padEnd(25), res[i].name.padEnd(20), res[i].salary.toString().padEnd(16), res[i].manager_id.toString().padEnd(12))
+
+
     }
-    // runSearch();
-
-    inquirer
-      .prompt({
-        name: "employees",
-        type: "list",
-        choices: employeeNames
-
-      })
-      .then(function (data) {
-        var query = "SELECT employee,"
-        connection.query(query, { data: data.employee }, function (err, res) {
-          for (var i = 0; i < res.length; i++) {
-            console.log("");
-          }
-          runSearch();
-        });
+    runSearch();
 
 
-      });
   })
 }
 ///////////////////////////////////////////////////////////////////////////////////
@@ -117,23 +103,31 @@ function viewAllDepartment() {
       departmentNames.push(res[i].name);
     }
     // runSearch();
-
     inquirer
       .prompt({
         name: "department",
         type: "list",
         choices: departmentNames
 
+
       })
       .then(function (data) {
-        var query = "SELECT employee,"
+       
+        var query =
+          "SELECT * FROM employee " +
+          "INNER JOIN role ON employee.role_id = role.id INNER JOIN department ON role.department_id = department.id " +
+          "WHERE department.name = '" + data.department + "'"
+        console.log(query)
         connection.query(query, { data: data.employee }, function (err, res) {
+          console.log('id      first_name      last_name      title                     department           salary      manager')
           for (var i = 0; i < res.length; i++) {
-            console.log("");
+            console.log(res[i].id.toString().padEnd(7), res[i].first_name.padEnd(15), res[i].last_name.padEnd(14), res[i].title.padEnd(25), res[i].name.padEnd(20), res[i].salary.toString().padEnd(16), res[i].manager_id.toString().padEnd(12))
+
+
           }
           runSearch();
         });
-      })
+      });
   })
 }
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -150,63 +144,106 @@ function viewAllManager() {
         name: "manager",
         type: "list",
         choices: departmentNames
+      })
+
+      .then(function (data) {
+        var query = "SELECT mangager,"
+        connection.query(query, { data: data.manager }, function (err, res) {
+          for (var i = 0; i < res.length; i++) {
+            console.log("");
+          }
+          runSearch();
+        });
+      });
   })
 
-  .then(function (data) {
-    var query = "SELECT mangager,"
-    connection.query(query, { data: data.manager }, function (err, res) {
-      for (var i = 0; i < res.length; i++) {
-        console.log("");
-      }
-      runSearch();
-    });
-  });
-  })
-
 }
-
-function viewAllRemovewEmployees() {
-  console.log("adding");
-  var query = "";
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////
+function AddEmployees() {
+  var query = "SELECT * FROM role ";
   connection.query(query, function (err, res) {
+    var roleNames = []
     for (var i = 0; i < res.length; i++) {
-      console.log(res[i].data);
+      roleNames.push(res[i].title);
     }
-    runSearch();
-  });
-}
+  inquirer
+      .prompt([{
+        name: "FirstName",
+        message: "What is the employe's first name?",
+        type: "input"
+    },{
+      name: "LastName",
+      message: "What is employe's last name?",
+      type: "input"
+    },{
+      name: "Role",
+        message: "What is the employe's role?",
+        type: "list",
+        choices: roleNames
+    }])
+      
+    .then(function (data) {
+      
+              // var query = "SELECT role,"
+              // connection.query(query, { data: data.employee }, function (err, res) {
+              //   for (var i = 0; i < res.length; i++) {
+              //     console.log("");
+              //   }
+              //   runSearch();
+              });
+            });
+          }
+    // runSearch();
 
-function viewAllAddEmployees() {
-  console.log("Manager");
-  var query = "SELECT ";
-  connection.query(query, function (err, res) {
-    for (var i = 0; i < res.length; i++) {
-      console.log(res[i].data);
-    }
-    runSearch();
-  });
-}
+//     inquirer
+//       .prompt({
+//         name: "department",
+//         type: "list",
+//         choices: departmentNames
 
-function updateEmployeeRole() {
-  console.log("Update");
-  var query = "SELECT ";
-  connection.query(query, function (err, res) {
-    for (var i = 0; i < res.length; i++) {
-      console.log(res[i].data);
-    }
-    runSearch();
-  });
-}
+//       })
+//       .then(function (data) {
+//         var query = "SELECT employee,"
+//         connection.query(query, { data: data.employee }, function (err, res) {
+//           for (var i = 0; i < res.length; i++) {
+//             console.log("");
+//           }
+//           runSearch();
+//         });
+//       })
+//   })
+// }
+// //////////ADDING EMPLOYEES//////////////////////////////////////////////////////////////////////////////
+// function viewAllAddEmployees() {
+//   var query = "SELECT ";
+//   connection.query(query, function (err, res) {
+//     for (var i = 0; i < res.length; i++) {
+//       console.log(res[i].data);
+//     }
+//     runSearch();
+//   });
+// }
 
-function updateEmployerManager() {
-  console.log("update employer manager");
-  var query = "SELECT ";
-  connection.query(query, function (err, res) {
-    for (var i = 0; i < res.length; i++) {
-      console.log(res[i].data);
-    }
-    runSearch();
-  });
-}
+// function updateEmployeeRole() {
+//   console.log("Update");
+//   var query = "SELECT ";
+//   connection.query(query, function (err, res) {
+//     for (var i = 0; i < res.length; i++) {
+//       console.log(res[i].data);
+//     }
+//     runSearch();
+//   });
+// }
+
+// function updateEmployerManager() {
+//   console.log("update employer manager");
+//   var query = "SELECT ";
+//   connection.query(query, function (err, res) {
+//     for (var i = 0; i < res.length; i++) {
+//       console.log(res[i].data);
+//     }
+//     runSearch();
+//   });
+// }
 
 
