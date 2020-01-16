@@ -4,18 +4,18 @@ var inquirer = require("inquirer");
 var connection = mysql.createConnection({
   host: "localhost",
 
-  // Your port; if not 3306
+  // My  port; 
   port: 3306,
 
-  // Your username
+  // The username
   user: "root",
 
-  // Your password
+  // The generic  password
   password: "bootcamp",
   database: "employdb"
 });
 
-// for heroku 
+// for heroku which I may not even need this
 const PORT = process.env.PORT || 3306;
 
 connection.connect(function (err) {
@@ -80,48 +80,118 @@ function gettingCommandLine() {
 }
 //look at this portion of the code. confused on the .prompt
 function viewAllEmlployees() {
-  console.log('see employees');
-  inquirer 
-    .prompt({
-      name: "employees",
-      type: "list"
+  var query = "SELECT employee.first_name, employee.last_name FROM employee";
+  connection.query(query, function (err, res) {
+    var employeeNames = []
+    for (var i = 0; i < res.length; i++) {
+      employeeNames.push(res[i].first_name + " " + res[i].last_name);
+    }
+    // runSearch();
 
-    })
-    .then(function(data) {
-      var query ="SELECT employee,"
-      connection.query(query, { data: data.employee}, function(err,res) {
-        for (var i = 0; i < res.length; i++) {
-          console.log("");
-        }
-        runSearch();
+    inquirer
+      .prompt({
+        name: "employees",
+        type: "list",
+        choices: employeeNames
+
+      })
+      .then(function (data) {
+        var query = "SELECT employee,"
+        connection.query(query, { data: data.employee }, function (err, res) {
+          for (var i = 0; i < res.length; i++) {
+            console.log("");
+          }
+          runSearch();
+        });
+
+
       });
-    });
+  })
 }
 
 function viewAllDepartment() {
-  console.log("department");
+  var query = "SELECT department.name FROM department";
+  connection.query(query, function (err, res) {
+    var departmentNames = []
+    for (var i = 0; i < res.length; i++) {
+      departmentNames.push(res[i].name);
+    }
+    // runSearch();
+
+    inquirer
+      .prompt({
+        name: "department",
+        type: "list",
+        choices: departmentNames
+
+      })
+      .then(function (data) {
+        var query = "SELECT employee,"
+        connection.query(query, { data: data.employee }, function (err, res) {
+          for (var i = 0; i < res.length; i++) {
+            console.log("");
+          }
+          runSearch();
+        });
+      })
+  })
 }
 
 function viewAllManager() {
   console.log("Manager");
+  var query = "SELECT ";
+  connection.query(query, function (err, res) {
+    for (var i = 0; i < res.length; i++) {
+      console.log(res[i].artist);
+    }
+    runSearch();
+  });
+
+
 }
 
 function viewAllRemovewEmployees() {
   console.log("adding");
+  var query = "";
+  connection.query(query, function (err, res) {
+    for (var i = 0; i < res.length; i++) {
+      console.log(res[i].data);
+    }
+    runSearch();
+  });
 }
 
 function viewAllAddEmployees() {
   console.log("Manager");
+  var query = "SELECT ";
+  connection.query(query, function (err, res) {
+    for (var i = 0; i < res.length; i++) {
+      console.log(res[i].data);
+    }
+    runSearch();
+  });
 }
 
 function updateEmployeeRole() {
   console.log("Update");
+  var query = "SELECT ";
+  connection.query(query, function (err, res) {
+    for (var i = 0; i < res.length; i++) {
+      console.log(res[i].data);
+    }
+    runSearch();
+  });
 }
 
 function updateEmployerManager() {
   console.log("update employer manager");
+  var query = "SELECT ";
+  connection.query(query, function (err, res) {
+    for (var i = 0; i < res.length; i++) {
+      console.log(res[i].data);
+    }
+    runSearch();
+  });
 }
 
-// app.listen(PORT, function () {
-//   console.log(`server is running on port ${PORT}`);
-// })
+
