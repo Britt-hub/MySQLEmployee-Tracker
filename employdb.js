@@ -147,7 +147,7 @@ function viewAllManager() {
       })
 
       .then(function (data) {
-        var query = "SELECT manager,"
+        var query = "SELECT mangager,"
         connection.query(query, { data: data.manager }, function (err, res) {
           for (var i = 0; i < res.length; i++) {
             console.log("");
@@ -165,7 +165,7 @@ function AddEmployees() {
     var roleNames = []
 
     for (var i = 0; i < res.length; i++) {
-      roleNames.push(res[i].title);
+      roleNames.push({name: res[i].title, id: res[i].id});
     }
     inquirer
       .prompt([{
@@ -185,15 +185,17 @@ function AddEmployees() {
 
       .then(function (data) {
 
-        var query = " INSERT INTO employee (first_name, last_name, role_id VALUES ('" + data.department + "', 'Badu', 9);"
-        connection.query(query, { data: data.employee }, function (err, res) {
-          for (var i = 0; i < res.length; i++) {
-            console.log("");
-          }
+        var query = " INSERT INTO employee SET ?";
+        connection.query(query, { first_name: data.FirstName, last_name: data.LastName, role_id: data.Role.id}, function (err, res) {
+          console.log('employee added');
+           
+           
+          
           runSearch();
         });
       });
-  }
+  });
+}
     // runSearch();
 
 //     inquirer
