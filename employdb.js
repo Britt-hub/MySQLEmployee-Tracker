@@ -40,7 +40,7 @@ function runSearch() {
           "View All Employees by Department",
           "View All Employees by Manager",
           "Add Employees",
-          "Remove Empoyees",
+          "Remove Empoyee",
           "Update EMployee Role",
           "Update Employer Manager"
         ]
@@ -64,7 +64,7 @@ function runSearch() {
           break;
 
         case "Remove Empoyees":
-          viewAllRemovewEmployees();
+          RemoveEmployees();
           break;
         case "Update Employee Role":
           updateEmployeeRole();
@@ -112,7 +112,7 @@ function viewAllDepartment() {
 
       })
       .then(function (data) {
-       
+
         var query =
           "SELECT * FROM employee " +
           "INNER JOIN role ON employee.role_id = role.id INNER JOIN department ON role.department_id = department.id " +
@@ -147,7 +147,7 @@ function viewAllManager() {
       })
 
       .then(function (data) {
-        var query = "SELECT mangager,"
+        var query = "SELECT manager,"
         connection.query(query, { data: data.manager }, function (err, res) {
           for (var i = 0; i < res.length; i++) {
             console.log("");
@@ -163,36 +163,37 @@ function AddEmployees() {
   var query = "SELECT * FROM role ";
   connection.query(query, function (err, res) {
     var roleNames = []
+
     for (var i = 0; i < res.length; i++) {
       roleNames.push(res[i].title);
     }
-  inquirer
+    inquirer
       .prompt([{
         name: "FirstName",
-        message: "What is the employe's first name?",
+        message: "What is the employee's first name?",
         type: "input"
-    },{
-      name: "LastName",
-      message: "What is employe's last name?",
-      type: "input"
-    },{
-      name: "Role",
-        message: "What is the employe's role?",
+      }, {
+        name: "LastName",
+        message: "What is employee's last name?",
+        type: "input"
+      }, {
+        name: "Role",
+        message: "What is the employee's role?",
         type: "list",
         choices: roleNames
-    }])
-      
-    .then(function (data) {
-      
-              // var query = "SELECT role,"
-              // connection.query(query, { data: data.employee }, function (err, res) {
-              //   for (var i = 0; i < res.length; i++) {
-              //     console.log("");
-              //   }
-              //   runSearch();
-              });
-            });
+      }])
+
+      .then(function (data) {
+
+        var query = " INSERT INTO employee (first_name, last_name, role_id VALUES ('" + data.department + "', 'Badu', 9);"
+        connection.query(query, { data: data.employee }, function (err, res) {
+          for (var i = 0; i < res.length; i++) {
+            console.log("");
           }
+          runSearch();
+        });
+      });
+  }
     // runSearch();
 
 //     inquirer
