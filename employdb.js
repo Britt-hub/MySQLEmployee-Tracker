@@ -78,7 +78,7 @@ function gettingCommandLine() {
 
     );
 }
-//look at this portion of the code. confused on the .prompt
+//look at this portion of the code. confused on the .prompt//////////////////////////////////
 function viewAllEmlployees() {
   var query = "SELECT employee.first_name, employee.last_name FROM employee";
   connection.query(query, function (err, res) {
@@ -108,7 +108,7 @@ function viewAllEmlployees() {
       });
   })
 }
-
+///////////////////////////////////////////////////////////////////////////////////
 function viewAllDepartment() {
   var query = "SELECT department.name FROM department";
   connection.query(query, function (err, res) {
@@ -136,17 +136,32 @@ function viewAllDepartment() {
       })
   })
 }
-
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 function viewAllManager() {
-  console.log("Manager");
-  var query = "SELECT ";
+  var query = "SELECT manager.name FROM manager ";
   connection.query(query, function (err, res) {
+    var managerNames = []
     for (var i = 0; i < res.length; i++) {
-      console.log(res[i].artist);
+      managerNames.push(res[i].name);
     }
-    runSearch();
-  });
+    // runSearch();
+    inquirer
+      .prompt({
+        name: "manager",
+        type: "list",
+        choices: departmentNames
+  })
 
+  .then(function (data) {
+    var query = "SELECT mangager,"
+    connection.query(query, { data: data.manager }, function (err, res) {
+      for (var i = 0; i < res.length; i++) {
+        console.log("");
+      }
+      runSearch();
+    });
+  });
+  })
 
 }
 
